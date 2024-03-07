@@ -2,14 +2,14 @@
   "name": "mgmt-dot-app-server",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "scripts": {
     "type-check": "tsc --noEmit",
     "lint": "eslint --ext .ts ./src",
     "dev": "cross-env NODE_ENV=development tsx --watch --trace-deprecation  ./src/index.ts",
     "build": "babel --extensions .ts src --out-dir dist --copy-files",
     "start": "cross-env NODE_ENV=production node ./dist/index.js",
-    "update-schema": "tsx ./src/utils/updateSchema.ts"
+    "update-schema": "tsx ./src/utils/updateSchema.ts",
+    "test": "cross-env NODE_ENV=test jest"
   },
   "keywords": [],
   "author": "",
