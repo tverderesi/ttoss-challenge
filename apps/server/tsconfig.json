@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "declaration": true,
+    "declarationDir": "dist/types",
+    "declarationMap": true,
+    "rootDirs": ["src"],
+    "outDir": "dist",
+    "lib": ["es2020"],
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "types": ["jest", "node"],
+    "baseUrl": ".",
+    "strictNullChecks": true,
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}
