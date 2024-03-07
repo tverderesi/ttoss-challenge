@@ -19,6 +19,12 @@ describe("Seed Videos", () => {
     });
     await mongoose.connect(db.getUri());
   });
+
+  beforeEach(async () => {
+    await mongoose.connect(db.getUri());
+    await VideoModel.deleteMany({});
+  });
+
   afterAll(async () => {
     await mongoose.disconnect();
     await db.stop();
@@ -48,5 +54,19 @@ describe("Seed Videos", () => {
     await seedVideos(mongoUri);
     expect(console.error).toHaveBeenCalledWith("Error seeding videos:", new Error("Error seeding videos"));
     insertManySpy.mockRestore();
+  });
+
+  it("should not seed videos if the collection is not empty", async () => {
+    jest.spyOn(console, "log").mockImplementation(() => {});
+    const mongoUri = db.getUri();
+    await mongoose.connect(mongoUri);
+    await VideoModel.create({
+      title: "Test Video",
+      url: "https://example.com/test-video",
+      src: "https://example.com/test-video.mp4",
+      rating: 4.5,
+    });
+    await seedVideos(mongoUri);
+    expect(console.log).toHaveBeenCalledWith("Videos collection is not empty. Skipping seeding.");
   });
 });
