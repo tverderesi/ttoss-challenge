@@ -9,7 +9,10 @@
     "build": "babel --extensions .ts src --out-dir dist --copy-files",
     "start": "cross-env NODE_ENV=production node ./dist/index.js",
     "update-schema": "tsx ./src/utils/updateSchema.ts",
-    "test": "cross-env NODE_ENV=test jest"
+    "test": "cross-env NODE_ENV=test jest",
+    "seed:dev": "cross-env NODE_ENV=development tsx ./src/seed/index.ts",
+    "seed:test": "cross-env NODE_ENV=test tsx ./src/seed/index.ts",
+    "seed:prod": "cross-env NODE_ENV=production tsx ./src/seed/index.ts"
   },
   "keywords": [],
   "author": "",
