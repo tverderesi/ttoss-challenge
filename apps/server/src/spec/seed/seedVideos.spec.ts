@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { seedVideos } from "../../seed/index";
+import { seedVideos } from "@/seed/seedVideos";
 import { VideoModel } from "../../model/video";
 import { setEnv } from "../../config/env";
 import { MongoMemoryServer } from "mongodb-memory-server";
