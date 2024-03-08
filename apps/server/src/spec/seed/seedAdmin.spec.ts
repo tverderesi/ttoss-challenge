@@ -33,7 +33,7 @@ describe("Seed Admin", () => {
 
   it("should seed the Admin", async () => {
     jest.spyOn(console, "log").mockImplementation(() => {});
-    await seedAdmin(db.getUri());
+    await seedAdmin();
     expect(console.log).toHaveBeenCalledWith(
       `An admin with the username ${admin.username} and password ${admin.password} was seeded successfully. Remember to change your password on your first login.`
     );
@@ -42,17 +42,12 @@ describe("Seed Admin", () => {
     expect(users.length).toBe(1);
   });
 
-  it("throw an error if MONGO_URI is not defined", async () => {
-    process.env.MONGO_URI = "";
-    await expect(seedAdmin()).rejects.toThrow("MONGO_URI must be defined");
-  });
-
   it("throw an error if an error occurs while seeding the Admin", async () => {
     jest.spyOn(console, "error").mockImplementation(() => {});
     const mongoUri = db.getUri();
     await mongoose.connect(mongoUri);
     const insertManySpy = jest.spyOn(UserModel, "create").mockRejectedValue(new Error("Error"));
-    await seedAdmin(mongoUri);
+    await seedAdmin();
     expect(console.error).toHaveBeenCalledWith("Error seeding admin:", new Error("Error"));
     insertManySpy.mockRestore();
   });
@@ -66,7 +61,7 @@ describe("Seed Admin", () => {
       password: "password",
       role: "admin",
     });
-    await seedAdmin(mongoUri);
+    await seedAdmin();
     expect(console.log).toHaveBeenCalledWith("There is already an admin. Skipping seeding.");
   });
 });
