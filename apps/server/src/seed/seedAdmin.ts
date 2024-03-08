@@ -1,18 +1,8 @@
-import mongoose from "mongoose";
 import { UserModel } from "@/model/user";
-import { setEnv } from "@/config/env";
 import { admin } from "./users";
 
-export async function seedAdmin(uri?: string) {
-  setEnv();
-  const mongoUri = uri || process.env.MONGO_URI; // Replace with your MongoDB connection URI
-  if (!mongoUri) {
-    throw new Error("MONGO_URI must be defined");
-  }
-
+export async function seedAdmin() {
   try {
-    await mongoose.connect(mongoUri);
-
     //check if the users collection is empty
     const existingAdmins = await UserModel.find({ role: "admin" });
     if (existingAdmins.length > 0) {
@@ -27,7 +17,5 @@ export async function seedAdmin(uri?: string) {
     }
   } catch (error) {
     console.error("Error seeding admin:", error);
-  } finally {
-    await mongoose.disconnect();
   }
 }

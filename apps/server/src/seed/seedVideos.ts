@@ -1,11 +1,9 @@
 import mongoose from "mongoose";
 import { videos } from "./videos";
 import { VideoModel } from "@/model/video";
-import { setEnv } from "@/config/env";
 
 export async function seedVideos(uri?: string) {
-  setEnv();
-  const mongoUri = uri || process.env.MONGO_URI; // Replace with your MongoDB connection URI
+  const mongoUri = uri || process.env.MONGO_URI;
   if (!mongoUri) {
     throw new Error("MONGO_URI must be defined");
   }
@@ -24,7 +22,5 @@ export async function seedVideos(uri?: string) {
     }
   } catch (error) {
     console.error("Error seeding videos:", error);
-  } finally {
-    await mongoose.disconnect();
   }
 }
