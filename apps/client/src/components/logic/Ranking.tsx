@@ -1,11 +1,9 @@
 import { videosQuery } from "@/graphql/queries/Videos";
 import { VideosRankingQuery } from "@/graphql/queries/__generated__/VideosRankingQuery.graphql";
-import { useQueryLoader, usePreloadedQuery } from "react-relay";
+import { usePreloadedQuery } from "react-relay";
 import { Table, TableBody, TableHeader, TableCell, TableRow, TableHead, TableFooter } from "../ui/table";
 import { ItemsPerPage } from "./ItemsPerPage";
 import { Pages } from "./Pages";
-import { useContext, useEffect } from "react";
-import { AppContext } from "@/context/AppContext";
 
 export function VideoRanking({
   preloadedQuery,
@@ -16,8 +14,6 @@ export function VideoRanking({
   loadQuery: any;
   disposeQuery: any;
 }) {
-  const { pagination } = useContext(AppContext);
-
   const { videos } = usePreloadedQuery<VideosRankingQuery>(videosQuery, preloadedQuery);
 
   const videoNodes = videos?.edges?.map((edge) => edge?.node);
