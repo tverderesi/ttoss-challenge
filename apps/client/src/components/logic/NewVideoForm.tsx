@@ -5,13 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useMutation, useQueryLoader } from "react-relay";
+import { useMutation } from "react-relay";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { parseVideoSrc } from "@/lib/parseVideoSrc";
 import { createVideoMutation } from "@/graphql/mutations/Videos";
 import { useContext } from "react";
 import { AppContext } from "@/context/AppContext";
-import { videosQuery } from "@/graphql/queries/Videos";
 
 const formSchema = z.object({
   title: z.string(),
@@ -20,8 +19,13 @@ const formSchema = z.object({
   rating: z.string().readonly(),
 });
 
-export function NewVideoForm() {
-  const [_, loadRankingVideosQuery] = useQueryLoader(videosQuery);
+export function NewVideoForm({
+  loadRankingVideosQuery,
+  disposeRankingVideosQuery,
+}: {
+  loadRankingVideosQuery: any;
+  disposeRankingVideosQuery: any;
+}) {
   const { pagination } = useContext(AppContext);
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -36,6 +40,7 @@ export function NewVideoForm() {
     commit({
       variables: { input },
       onCompleted() {
+        disposeRankingVideosQuery();
         loadRankingVideosQuery({ first: pagination, sort: { field: "rating", order: "desc" } }, { fetchPolicy: "network-only" });
         form.reset();
       },

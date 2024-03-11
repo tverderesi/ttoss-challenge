@@ -23,7 +23,7 @@ const App: React.FC = () => {
           <Suspense fallback={<RateVideosSkeleton />}>
             <RateVideos />
           </Suspense>
-          <NewVideoForm />
+          <NewVideoForm loadRankingVideosQuery={loadRankingVideosQuery} disposeRankingVideosQuery={disposeRankingVideosQuery} />
           {preloadedRankingVideosQuery ? (
             <VideoRanking
               preloadedQuery={preloadedRankingVideosQuery}
