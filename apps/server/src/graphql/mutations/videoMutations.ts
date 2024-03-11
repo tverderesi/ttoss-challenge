@@ -35,6 +35,10 @@ const createVideoMutation = mutationWithClientMutationId({
     if (!title || !url || !src) {
       throw new Error("The title, url and src are required.");
     }
+    const doesExist = await VideoModel.exists({ url });
+    if (doesExist) {
+      throw new Error("The video already exists.");
+    }
     const video = new VideoModel({ title, url, src, rating });
     return await video.save();
   },
