@@ -1,33 +1,18 @@
-# `Turborepo` Vite starter
+# ttoss-challenge
 
-This is an official starter Turborepo.
+This is my solution to the ttoss-challenge.
 
-## Using this example
+## Solution
 
-Run the following command:
+_Upcoming_
 
-```sh
-npx create-turbo@latest -e with-vite
-```
+## Building and running the package
 
-## What's inside?
+**Ensure you have a mongo server installing and running. You can either use it installed in your local system, using MongoDB Atlas, or via Docker.**
 
-This Turborepo includes the following packages and apps:
-
-### Apps and Packages
-
-- `docs`: a vanilla [vite](https://vitejs.dev) ts app
-- `web`: another vanilla [vite](https://vitejs.dev) ts app
-- `@repo/ui`: a stub component & utility library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: shared `eslint` configurations
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+1. Create of copy of .env.example and name it as .env.production both in the apps/client and apps/server folder.
+2. Fill in the fields appropriately.
+3. Navigate to `apps/server` (i.e. `cd apps/server`) in your terminal. Run `npm run build`. Wait for it to finish.
+4. Navigate to `apps/client` (i.e. `cd ../client`) in your terminal. Run `npm run build`. Wait for it to finish.
+5. Ensure that the `serve` package is installed globally. If it isn't, install it by using `npm i serve -g`.
+6. navigate to the root of the project (i.e. `cd ../..`) and run `turbo start`. The server and package should be running.
