@@ -14,13 +14,19 @@ export function Pages({ pageInfo, loadQuery }: { pageInfo: any; loadQuery: any }
 
   const handleNextPage = () => {
     startTransition(() => {
-      loadQuery({ after: endCursor, first: pagination }, { fetchPolicy: "network-only" });
+      loadQuery(
+        { after: endCursor, first: pagination, sort: { field: "rating", order: "desc" } },
+        { fetchPolicy: "network-only" }
+      );
       dispatch({ type: "SET_PAGE", payload: page + 1 });
     });
   };
   const handlePreviousPage = () => {
     startTransition(() => {
-      loadQuery({ before: startCursor, last: pagination }, { fetchPolicy: "network-only" });
+      loadQuery(
+        { before: startCursor, last: pagination, sort: { field: "rating", order: "desc" } },
+        { fetchPolicy: "network-only" }
+      );
       dispatch({ type: "SET_PAGE", payload: page - 1 });
     });
   };
