@@ -1,9 +1,9 @@
 import React from "react";
-
+import { RateHome } from "./pages/RateHome";
 const App: React.FC = () => {
   return (
-    <div>
-      <h1>Hello, World!</h1>
+    <div className="min-h-screen">
+      <RateHome />
     </div>
   );
 };

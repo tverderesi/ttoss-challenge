@@ -1,0 +1,309 @@
+type Query {
+  user(id: ID!): User
+  users(filters: UserFilters, sort: UserSort, equalityType: UserEqualityType, pagination: UserPagination): UserConnection!
+  video(id: ID!): Video
+  videos(filters: VideoFilters, sort: VideoSort, equalityType: VideoEqualityType, first: Int, last: Int, before: String, after: String): VideoConnection!
+  twoRandomVideos: TwoRandomVideos
+  videoCount: Int
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Fetches objects given their IDs"""
+  nodes(
+    """The IDs of objects"""
+    ids: [ID!]!
+  ): [Node]!
+}
+
+"""
+A user of the appplication. It can be an admin, which can manage the videos, or a regular user, which can only watch the videos.
+"""
+type User implements Node {
+  """The ID of an object"""
+  id: ID!
+
+  """The email of the user."""
+  username: String!
+
+  """The role of the user."""
+  role: String!
+
+  """The password of the user."""
+  password: String!
+
+  """The date when the user was created."""
+  createdAt: String!
+
+  """The date when the user was last updated."""
+  updatedAt: String!
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""A connection to a list of items."""
+type UserConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserEdge]
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""An edge in a connection."""
+type UserEdge {
+  """The item at the end of the edge"""
+  node: User
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input UserFilters {
+  username: String
+  role: String
+  createdAt: String
+  updatedAt: String
+}
+
+input UserSort {
+  field: String
+  order: String
+}
+
+input UserEqualityType {
+  field: String
+  order: EqualityType
+}
+
+enum EqualityType {
+  gte
+  lte
+  gt
+  lt
+  eq
+  ne
+}
+
+input UserPagination {
+  first: Int
+  last: Int
+  before: String
+  after: String
+}
+
+"""A video that can be watched and rated by users."""
+type Video implements Node {
+  """The ID of an object"""
+  id: ID!
+
+  """The title of the video."""
+  title: String
+
+  """The rating of the video."""
+  rating: String
+
+  """The URL of the video."""
+  url: String
+
+  """The source of the video."""
+  src: String
+
+  """The date when the video was created."""
+  createdAt: String
+
+  """The date when the video was last updated."""
+  updatedAt: String
+}
+
+"""A connection to a list of items."""
+type VideoConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [VideoEdge]
+}
+
+"""An edge in a connection."""
+type VideoEdge {
+  """The item at the end of the edge"""
+  node: Video
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input VideoFilters {
+  title: String
+  rating: String
+  createdAt: String
+  updatedAt: String
+}
+
+input VideoSort {
+  field: String
+  order: String
+}
+
+input VideoEqualityType {
+  title: EqualityType
+  rating: EqualityType
+  createdAt: EqualityType
+  updatedAt: EqualityType
+}
+
+type TwoRandomVideos {
+  videoA: Video
+  videoB: Video
+}
+
+type Mutation {
+  """A mutation to create a new user."""
+  createUserMutation(input: CreateUserInput!): CreateUserPayload
+
+  """A mutation to update a user."""
+  updateUserMutation(input: UpdateUserInput!): UpdateUserPayload
+
+  """A mutation to delete a user."""
+  deleteUserMutation(input: DeleteUserInput!): DeleteUserPayload
+
+  """A mutation to create a new video."""
+  createVideoMutation(input: CreateVideoInput!): CreateVideoPayload
+
+  """A mutation to rate a video."""
+  rateVideosMutation(input: RateVideosInput!): RateVideosPayload
+
+  """A mutation to delete a video."""
+  deleteVideoMutation(input: DeleteVideoInput!): DeleteVideoPayload
+}
+
+type CreateUserPayload {
+  user: User
+  clientMutationId: String
+}
+
+input CreateUserInput {
+  """The email of the user."""
+  username: String!
+
+  """The role of the user."""
+  role: UserRole
+
+  """The password of the user."""
+  password: String!
+
+  """The password of the user."""
+  confirmPassword: String!
+  clientMutationId: String
+}
+
+enum UserRole {
+  admin
+  user
+}
+
+type UpdateUserPayload {
+  user: User
+  clientMutationId: String
+}
+
+input UpdateUserInput {
+  """The unique identifier of the user."""
+  id: String!
+
+  """The email of the user."""
+  username: String
+
+  """The role of the user."""
+  role: UserRole
+
+  """The password of the user."""
+  password: String
+
+  """The password of the user."""
+  newPassword: String
+  clientMutationId: String
+}
+
+type DeleteUserPayload {
+  success: Boolean
+  clientMutationId: String
+}
+
+input DeleteUserInput {
+  """The unique identifier of the user."""
+  id: String!
+  clientMutationId: String
+}
+
+type CreateVideoPayload {
+  video: Video
+  clientMutationId: String
+}
+
+input CreateVideoInput {
+  """The title of the video."""
+  title: String!
+
+  """The URL of the video."""
+  url: String!
+
+  """The source of the video."""
+  src: String!
+
+  """The rating of the video."""
+  rating: String
+  clientMutationId: String
+}
+
+type RateVideosPayload {
+  videoA: Video
+  videoB: Video
+  clientMutationId: String
+}
+
+input RateVideosInput {
+  """The id of the first video."""
+  videoA: String!
+
+  """The id of the second video."""
+  videoBGlobalId: String!
+
+  """The winner of the comparison."""
+  winner: String!
+  clientMutationId: String
+}
+
+type DeleteVideoPayload {
+  success: Boolean
+  clientMutationId: String
+}
+
+input DeleteVideoInput {
+  """The id of the video."""
+  id: String!
+  clientMutationId: String
+}
