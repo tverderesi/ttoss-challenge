@@ -11,7 +11,8 @@
     "update-schema": "tsx ./src/utils/updateSchema.ts",
     "test": "cross-env NODE_ENV=test jest",
     "db:seed:dev": "cross-env NODE_ENV=development tsx ./src/seed/index.ts",
-    "db:clear": "cross-env NODE_ENV=development tsx ./src/seed/clearDb.ts"
+    "db:clear": "cross-env NODE_ENV=development tsx ./src/seed/clearDb.ts",
+    "schema:copy": "tsx  ./src/graphql/schema/updateSchema.ts"
   },
   "keywords": [],
   "author": "",
