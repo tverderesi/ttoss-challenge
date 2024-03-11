@@ -4,13 +4,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "../ui/textarea";
-import { useMutation } from "react-relay";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
-import { parseVideoSrc } from "../../lib/parseVideoSrc";
+import { Textarea } from "@/components/ui/textarea";
+import { useMutation, useQueryLoader } from "react-relay";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { parseVideoSrc } from "@/lib/parseVideoSrc";
 import { createVideoMutation } from "@/graphql/mutations/Videos";
 import { useContext } from "react";
 import { AppContext } from "@/context/AppContext";
+import { videosQuery } from "@/graphql/queries/Videos";
 
 const formSchema = z.object({
   title: z.string(),
@@ -19,7 +20,8 @@ const formSchema = z.object({
   rating: z.string().readonly(),
 });
 
-export function NewVideoForm({ loadQuery }: { loadQuery: any }) {
+export function NewVideoForm() {
+  const [_, loadRankingVideosQuery] = useQueryLoader(videosQuery);
   const { pagination } = useContext(AppContext);
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -33,12 +35,11 @@ export function NewVideoForm({ loadQuery }: { loadQuery: any }) {
     const input = { ...data, src, url };
     commit({
       variables: { input },
-      onCompleted: (data) => {
-        loadQuery({ first: pagination }, { fetchPolicy: "network-only" });
-        console.log(data);
+      onCompleted() {
+        loadRankingVideosQuery({ first: pagination, sort: { field: "rating", order: "desc" } }, { fetchPolicy: "network-only" });
         form.reset();
       },
-      onError: (error) => console.error(error),
+      onError: (error) => alert(error.message),
     });
   };
 

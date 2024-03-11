@@ -6,7 +6,7 @@ import { AppContext } from "@/context/AppContext";
 import { Button } from "../ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-export function Pages({ pageInfo, loadQuery }: { pageInfo: any; loadQuery: any }) {
+export function Pages({ pageInfo, loadQuery, disposeQuery }: { pageInfo: any; loadQuery: any; disposeQuery: any }) {
   const { videoCount } = useLazyLoadQuery<VideosCountQuery>(videoCountQuery, {});
   const { startCursor, endCursor } = pageInfo;
   const { pagination, page, dispatch } = useContext(AppContext);
@@ -14,6 +14,7 @@ export function Pages({ pageInfo, loadQuery }: { pageInfo: any; loadQuery: any }
 
   const handleNextPage = () => {
     startTransition(() => {
+      disposeQuery();
       loadQuery(
         { after: endCursor, first: pagination, sort: { field: "rating", order: "desc" } },
         { fetchPolicy: "network-only" }
@@ -23,6 +24,7 @@ export function Pages({ pageInfo, loadQuery }: { pageInfo: any; loadQuery: any }
   };
   const handlePreviousPage = () => {
     startTransition(() => {
+      disposeQuery();
       loadQuery(
         { before: startCursor, last: pagination, sort: { field: "rating", order: "desc" } },
         { fetchPolicy: "network-only" }

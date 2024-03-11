@@ -1,23 +1,16 @@
-import { usePreloadedQuery, useMutation } from "react-relay";
+import { useMutation, useLazyLoadQuery, useQueryLoader } from "react-relay";
 import { VideoCard } from "@/components/logic/VideoCard";
-import { twoRandomVideosQuery } from "../../graphql/queries/Videos";
+import { twoRandomVideosQuery, videosQuery } from "../../graphql/queries/Videos";
 import { AppContext } from "@/context/AppContext";
 import { Button } from "@/components/ui/button";
 import { VideosRandomQuery } from "@/graphql/queries/__generated__/VideosRandomQuery.graphql";
 import { useContext } from "react";
 import { rateVideosMutation } from "@/graphql/mutations/Videos";
 
-export function RateVideos({
-  queryReference,
-  loadQuery,
-  loadRankedQuery,
-}: {
-  queryReference: any;
-  loadQuery: any;
-  disposeRankingQuery: any;
-  loadRankedQuery: any;
-}) {
-  const { twoRandomVideos } = usePreloadedQuery<VideosRandomQuery>(twoRandomVideosQuery, queryReference);
+export function RateVideos() {
+  const { twoRandomVideos } = useLazyLoadQuery<VideosRandomQuery>(twoRandomVideosQuery, {}, { fetchPolicy: "network-only" });
+  const [_, loadRandomVideosQuery] = useQueryLoader(twoRandomVideosQuery);
+  const [__, loadRankedQuery] = useQueryLoader(videosQuery);
   const { pagination, dispatch } = useContext(AppContext);
   const [commit] = useMutation(rateVideosMutation);
 
@@ -38,7 +31,7 @@ export function RateVideos({
                 },
               },
               onCompleted() {
-                loadQuery({}, { fetchPolicy: "network-only" });
+                loadRandomVideosQuery({}, { fetchPolicy: "network-only" });
                 dispatch({ type: "SET_PAGE", payload: 1 });
                 loadRankedQuery({ sort: { field: "rating", order: "desc" }, first: pagination }, { fetchPolicy: "network-only" });
               },
@@ -53,14 +46,14 @@ export function RateVideos({
           video={twoRandomVideos?.videoA}
           commit={commit}
           videoData={twoRandomVideos}
-          loadQuery={loadQuery}
+          loadQuery={loadRandomVideosQuery}
           loadRankedQuery={loadRankedQuery}
         />
         <VideoCard
           video={twoRandomVideos?.videoB}
           commit={commit}
           videoData={twoRandomVideos}
-          loadQuery={loadQuery}
+          loadQuery={loadRandomVideosQuery}
           loadRankedQuery={loadRankedQuery}
         />
       </div>

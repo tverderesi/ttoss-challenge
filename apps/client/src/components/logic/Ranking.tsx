@@ -1,12 +1,25 @@
 import { videosQuery } from "@/graphql/queries/Videos";
 import { VideosRankingQuery } from "@/graphql/queries/__generated__/VideosRankingQuery.graphql";
-import { usePreloadedQuery } from "react-relay";
+import { useQueryLoader, usePreloadedQuery } from "react-relay";
 import { Table, TableBody, TableHeader, TableCell, TableRow, TableHead, TableFooter } from "../ui/table";
 import { ItemsPerPage } from "./ItemsPerPage";
 import { Pages } from "./Pages";
+import { useContext, useEffect } from "react";
+import { AppContext } from "@/context/AppContext";
 
-export function VideoRanking({ queryReference, loadQuery }: { queryReference: any; loadQuery: any }) {
-  const { videos } = usePreloadedQuery<VideosRankingQuery>(videosQuery, queryReference);
+export function VideoRanking({
+  preloadedQuery,
+  loadQuery,
+  disposeQuery,
+}: {
+  preloadedQuery: any;
+  loadQuery: any;
+  disposeQuery: any;
+}) {
+  const { pagination } = useContext(AppContext);
+
+  const { videos } = usePreloadedQuery<VideosRankingQuery>(videosQuery, preloadedQuery);
+
   const videoNodes = videos?.edges?.map((edge) => edge?.node);
   const pageInfo = videos?.pageInfo;
 
@@ -20,7 +33,7 @@ export function VideoRanking({ queryReference, loadQuery }: { queryReference: an
           <TableHeader className="bg-card/0 p-2">
             <TableRow>
               <TableHead className="py-4">Title</TableHead>
-              <TableHead className="py-4">Rating</TableHead>
+              <TableHead className="py-4 w-32">Rating</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -33,7 +46,7 @@ export function VideoRanking({ queryReference, loadQuery }: { queryReference: an
           </TableBody>
           <TableFooter className="bg-card/0">
             <ItemsPerPage itemsPerPage={[1, 5, 10, 20]} />
-            <Pages pageInfo={pageInfo} loadQuery={loadQuery} />
+            <Pages pageInfo={pageInfo} loadQuery={loadQuery} disposeQuery={disposeQuery} />
           </TableFooter>
         </Table>
       )}
