@@ -1,10 +1,4 @@
-export interface Video {
-  title: string;
-  url: string;
-  src: string;
-  rating?: number;
-}
-
+import { Video } from "@/model/video";
 export const videos: Video[] = [
   {
     title: "Magnus Carlsen JOGA O QUE ELE QUISER",

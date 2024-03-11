@@ -11,9 +11,8 @@ export async function seedAdmin() {
     } else {
       await UserModel.create(admin);
 
-      console.log(
-        `An admin with the username ${admin.username} and password ${admin.password} was seeded successfully. Remember to change your password on your first login.`
-      );
+      console.log(`An admin with the username ${admin.username} and password ${admin.password} was seeded successfully.`);
+      console.log("Remember to change your password on your first login.");
     }
   } catch (error) {
     console.error("Error seeding admin:", error);
