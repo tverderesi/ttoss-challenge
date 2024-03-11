@@ -1,4 +1,4 @@
-import { loadQuery, useQueryLoader } from "react-relay";
+import { useQueryLoader } from "react-relay";
 import { RateVideos } from "../components/logic/RateVideos";
 import { twoRandomVideosQuery } from "../graphql/queries/Videos";
 import { useContext, useEffect } from "react";

@@ -6,16 +6,8 @@ export const applyCors = (app: Application, env: "production" | "development" | 
   }
   app.use(
     cors({
-      credentials: true,
-      origin:
-        env === "production"
-          ? [
-              "https://project-mgmt-app-drab.vercel.app",
-              "https://project-mgmt-server-vnup.onrender.com",
-              "https://apollo-server-landing-page.cdn.apollographql.com",
-              "https://sandbox.embed.apollographql.com",
-            ]
-          : ["http://localhost:5173", "https://sandbox.embed.apollographql.com"],
+      allowedHeaders: "*",
+      origin: "*",
     })
   );
 };

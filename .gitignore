@@ -12,3 +12,5 @@ public/dist
 .env.development
 .env.test
 
+apps/server/.env.production
+apps/client/.env.production

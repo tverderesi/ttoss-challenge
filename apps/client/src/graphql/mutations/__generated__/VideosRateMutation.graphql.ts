@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d17c9a1edee0103a50b5934aca68db62>>
+ * @generated SignedSource<<67d30e66b2c895ffbca478d6dc7b14e6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,7 +11,7 @@
 import { ConcreteRequest, Mutation } from 'relay-runtime';
 export type RateVideosInput = {
   clientMutationId?: string | null | undefined;
-  videoA: string;
+  videoAGlobalId: string;
   videoBGlobalId: string;
   winner: string;
 };
